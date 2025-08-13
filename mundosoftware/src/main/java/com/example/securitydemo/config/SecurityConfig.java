@@ -23,35 +23,49 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService usersDetailsService() {
-
         var manager = new InMemoryUserDetailsManager();
+
         manager.createUser(User
-        .withUsername("admin")
-        .password("{noop}admin123")     //"{noop}" significa que la contraseña no tiene codificación
-        .roles("ADMIN")
-        .build());
-        
+                .withUsername("admin")
+                .password("{noop}admin123")
+                .roles("ADMIN")
+                .build());
+
         manager.createUser(User
-        .withUsername("user")
-        .password("{noop}user123")
-        .roles("USER")
-        .build());
+                .withUsername("user")
+                .password("{noop}user123")
+                .roles("USER")
+                .build());
+
         return manager;
     }
-
-//Define las reglas de seguridad: rutas públicas, protegidas, login y logout.
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login", "/usuarios/registrar", "/usuarios/login", "/usuarios/recuperar", "/css/**", "/api/productos/**").permitAll()
+                // rutas públicas
+                .requestMatchers(
+                    "/login",
+                    "/usuarios/login",
+                    "/usuarios/recuperar",
+                    "/usuarios/registerNuevo",
+                    "/usuarios/register",
+                    "/register", 
+                    "/css/**",
+                    "/js/**",
+                    "/images/**",
+                    "/api/productos/**"
+                ).permitAll()
+
+                // rutas con roles específicos
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/user/**").hasRole("USER")
+
+                // todo lo demás requiere autenticación
                 .anyRequest().authenticated()
             )
 
-            
             .formLogin(form -> form
                 .loginPage("/login")
                 .permitAll()
@@ -69,9 +83,7 @@ public class SecurityConfig {
             )
 
             .httpBasic(Customizer.withDefaults())
-            .csrf(csrf->csrf.disable());
-
-            
+            .csrf(csrf -> csrf.disable());
 
         return http.build();
     }
