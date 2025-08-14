@@ -16,6 +16,16 @@ public class Producto {
     private double precio;
     private String categoria;
 
+    public Producto() {
+    }
+
+    public Producto(String nombre, String descripcion, double precio, String categoria) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precio = precio;
+        this.categoria = categoria;
+    }
+
     // Getters y Setters
 
     public Long getId() {

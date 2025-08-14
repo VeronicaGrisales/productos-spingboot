@@ -17,6 +17,10 @@ public class ProductoService {
         return productoRepository.save(producto);
     }
 
+    public ProductoService(ProductoRepository productoRepository) {
+        this.productoRepository = productoRepository;
+    }
+
     // Obtener todos los productos
     public List<Producto> obtenerTodos() {
         return productoRepository.findAll();
@@ -42,7 +46,7 @@ public class ProductoService {
         return productoRepository.findByNombreContainingIgnoreCase(nombre);
     }
 
-     public Producto actualizarProducto(Long id, Producto productoActualizado) {
+    public Producto actualizarProducto(Long id, Producto productoActualizado) {
         return productoRepository.findById(id).map(producto -> {
             producto.setNombre(productoActualizado.getNombre());
             producto.setDescripcion(productoActualizado.getDescripcion());

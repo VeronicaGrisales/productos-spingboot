@@ -2,89 +2,120 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title th:text="#{iniciarSesion}">Iniciar Sesión</title><!--se hace llamado al comando para traducir-->
+    <title th:text="#{iniciarSesion}">Iniciar Sesión</title>
 
-    <div class="botonesLenguaje">
-
-        <!-- se crean los botones para el cambio de idioma llamando directamente a los archivos properties-->
-        <!--de igual manera se crea la locacion en la barra cuando se cambia el idioma-->
-
-<button type="button" class="botonEn" th:text="#{lang.en}" onclick="location.href='?localeData=en'"></button>
-<button type="button" class="botonIt" th:text="#{lang.it}" onclick="location.href='?localeData=it'"></button>
-<button type="button" class="botonEs" th:text="#{lang.es}" onclick="location.href='?localeData=es'"></button>
-<button type="button" class="botonPo" th:text="#{lang.po}" onclick="location.href='?localeData=po'"></button>
-     </div>
-
-     <style>
+    <style>
         body {
             background: #f0f4f8;
             font-family: Arial, sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
             margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
+/* HEADER */
+header {
+    width: 100%;
+    background-color: #1976d2;
+    color: white;
+    padding: 10px 20px; /* aquí agregamos 20px de espacio interno */
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    z-index: 1000;
+    box-sizing: border-box; /* asegura que el padding no desborde */
+}
+
+/* Botón principal del idioma */
+.dropdown-btn {
+    background-color: white;
+    color: #1976d2;
+    padding: 6px 10px; /* un poco más pequeño para que no se vea aplastado */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+
+        /* Botón principal del idioma */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-btn {
+            background-color: white;
+            color: #1976d2;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* Menú desplegable */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            margin-top: 5px;
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1001;
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.25s ease-in-out;
+        }
+
+        .dropdown-content.show {
+            display: block;
+            transform: scaleY(1);
+        }
+
+        .dropdown-content button {
+            background-color: white;
+            color: #333;
+            border: none;
+            padding: 10px 15px;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .dropdown-content button:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* CONTENEDOR CENTRAL */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 60px; /* espacio para que no lo tape el header */
+        }
+
+        /* LOGIN */
         .login-container {
             background: white;
             padding: 30px 40px;
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             width: 300px;
-            position: relative;
         }
 
         .login-container h2 {
             text-align: center;
             margin-bottom: 25px;
             color: #333;
-        }
-
-        .botonesLenguaje {
-            position: absolute;
-            display: flex;
-            right: 10px;
-            top: 10px;
-            gap: 8px;
-            justify-content: flex-end;
-            margin-bottom: 10px;
-        }
-
-        .botonEn {
-            background-color: #1976d2;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .botonIt {
-            background-color: #1976d2;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .botonEs{
-            background-color: #1976d2;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .botonPo{
-            background-color: #1976d2;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
         }
 
         .form-group {
@@ -129,27 +160,55 @@
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <h2 th:text="#{iniciarSesion}">Iniciar Sesión</h2>
-        <form method="post" action="/login">
-            <div class="form-group">
-                <label th:text="#{usuario}" for="username">Usuario:</label>
-                <input type="text" id="username" name="username" required />
-            </div>
-            <div class="form-group">
-                <label th:text="#{contrasena}" for="password">Contraseña:</label>
-                <input type="password" id="password" name="password" required />
-            </div>
-            <button class="login-btn" type="submit" th:text="#{entrar}">Entrar</button>
-        </form>
 
-        <div class="message">
-            <a th:href="@{/usuarios/registerNuevo}">Registrarse</a>
-            <!-- Mensaje de cierre de sesión o error --> 
-            <p th:text="#{logoutMessage}">Has cerrado sesión.</p>
+    <!-- HEADER CON BOTÓN DE IDIOMAS -->
+    <header>
+        <div class="dropdown">
+            <button class="dropdown-btn">🌐</button>
+            <div class="dropdown-content">
+                <button th:text="#{lang.en}" onclick="location.href='?localeData=en'"></button>
+                <button th:text="#{lang.it}" onclick="location.href='?localeData=it'"></button>
+                <button th:text="#{lang.es}" onclick="location.href='?localeData=es'"></button>
+                <button th:text="#{lang.po}" onclick="location.href='?localeData=po'"></button>
+            </div>
         </div>
-    </div>
+    </header>
+
+    <!-- CONTENIDO LOGIN CENTRADO -->
+    <main>
+        <div class="login-container">
+            <h2 th:text="#{iniciarSesion}">Iniciar Sesión</h2>
+            <form method="post" action="/login">
+                <div class="form-group">
+                    <label th:text="#{usuario}" for="username">Usuario:</label>
+                    <input type="text" id="username" name="username" required />
+                </div>
+                <div class="form-group">
+                    <label th:text="#{contrasena}" for="password">Contraseña:</label>
+                    <input type="password" id="password" name="password" required />
+                </div>
+                <button class="login-btn" type="submit" th:text="#{entrar}">Entrar</button>
+            </form>
+
+            <div class="message">
+                <a th:href="@{/usuarios/registerNuevo}">Registrarse</a>
+                <p th:text="#{logoutMessage}">Has cerrado sesión.</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const dropdownBtn = document.querySelector(".dropdown-btn");
+        const dropdownContent = document.querySelector(".dropdown-content");
+
+        dropdownBtn.addEventListener("click", function(event) {
+            dropdownContent.classList.toggle("show");
+            event.stopPropagation();
+        });
+
+        document.addEventListener("click", function() {
+            dropdownContent.classList.remove("show");
+        });
+    </script>
 </body>
-</html> 
-
-
+</html>

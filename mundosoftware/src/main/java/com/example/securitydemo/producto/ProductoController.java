@@ -12,7 +12,7 @@ import java.util.Optional;
 public class ProductoController {
 
     @Autowired
-    private ProductoService productoService;
+    private  ProductoService productoService;
 
     // Crear un nuevo producto
     @PostMapping
@@ -25,6 +25,12 @@ public class ProductoController {
     public List<Producto> obtenerTodos() {
         return productoService.obtenerTodos();
     }
+
+    @GetMapping("/producto")
+    public String producto() {
+    return "producto"; // nombre del archivo en templates
+    }
+
 
     // Obtener producto por ID
     @GetMapping("/{id}")
